@@ -11,7 +11,7 @@
     "binary_sensor": {
       "engine": { "default": "mdi:engine" },
       "ignition": { "default": "mdi:key" },
-      "doors": { "default": "mdi:car-door" },
+      "doors": { "default": "mdi:lock" },
       "online": { "default": "mdi:cloud-check" }
     },
     "sensor": {

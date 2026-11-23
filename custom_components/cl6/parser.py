@@ -36,6 +36,21 @@ def _text(value: Any) -> str | None:
     return text or None
 
 
+def raw_value(value: Any) -> str | None:
+    """Keep a raw attribute, including booleans and numbers.
+
+    ``_text`` hides booleans so word matching does not treat ``True`` as the
+    word "true". The attribute still needs to show what CL6 sent. A JSON
+    ``true`` was showing up as an empty raw value.
+    """
+    if value is None:
+        return None
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    text = str(value).strip()
+    return text or None
+
+
 def parse_float(value: Any) -> float | None:
     """Parse a number. Booleans are not numbers."""
     if value is None or isinstance(value, bool):
@@ -90,17 +105,22 @@ def parse_online(value: Any) -> bool | None:
 
 
 def parse_doors_open(value: Any) -> bool | None:
-    """True when a door is open. Lock words are not treated as open or closed."""
+    """True when the lock binary sensor should be on.
+
+    On a live CL6 car, DoorStatus is the lock: ``locked`` or ``unlocked``.
+    It does not say whether a door is ajar. Locked is off. Unlocked is on.
+    Open and closed words are still accepted for the same on and off.
+    """
     if isinstance(value, bool):
         return value
     text = _text(value)
     if text is None:
         return None
     normalized = text.lower()
-    if normalized in _OPEN or normalized in _ON:
-        return True
-    if normalized in _CLOSED or normalized in _OFF:
+    if normalized in _LOCKED or normalized in _CLOSED or normalized in _OFF:
         return False
+    if normalized in _UNLOCKED or normalized in _OPEN or normalized in _ON:
+        return True
     return None
 
 
@@ -194,16 +214,16 @@ def vehicle_from_status(raw: dict[str, Any] | None, assumed_lock: bool | None) -
         "voltage": parse_float(raw.get("ExternalVoltage")),
         "rssi": parse_float(raw.get("Rssi")),
         "gps_time": parse_gps_time(gps_raw),
-        "gps_time_raw": _text(gps_raw),
-        "gps_status": _text(raw.get("GpsStatus")),
+        "gps_time_raw": raw_value(gps_raw),
+        "gps_status": raw_value(raw.get("GpsStatus")),
         "engine_on": parse_engine(raw.get("EngineStatus")),
         "ignition_on": parse_ignition(raw.get("IgnitionStatus")),
         "doors_open": parse_doors_open(raw.get("DoorStatus")),
         "online": parse_online(raw.get("Online")),
         "locked": parse_locked(raw.get("DoorStatus"), assumed_lock),
-        "engine_raw": _text(raw.get("EngineStatus")),
-        "ignition_raw": _text(raw.get("IgnitionStatus")),
-        "door_raw": _text(raw.get("DoorStatus")),
-        "online_raw": _text(raw.get("Online")),
-        "engine_shutdown_raw": _text(raw.get("EngineShutdownDateTime")),
+        "engine_raw": raw_value(raw.get("EngineStatus")),
+        "ignition_raw": raw_value(raw.get("IgnitionStatus")),
+        "door_raw": raw_value(raw.get("DoorStatus")),
+        "online_raw": raw_value(raw.get("Online")),
+        "engine_shutdown_raw": raw_value(raw.get("EngineShutdownDateTime")),
     }

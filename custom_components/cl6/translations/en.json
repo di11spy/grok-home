@@ -72,7 +72,7 @@
     "binary_sensor": {
       "engine": { "name": "Engine" },
       "ignition": { "name": "Ignition" },
-      "doors": { "name": "Doors" },
+      "doors": { "name": "Lock status" },
       "online": { "name": "Online" }
     },
     "sensor": {

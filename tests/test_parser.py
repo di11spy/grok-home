@@ -23,12 +23,14 @@ def test_engine_ignition_and_online_words():
     assert parse_online("offline") is False
 
 
-def test_door_open_is_not_the_lock():
+def test_door_status_is_the_lock():
+    assert parse_doors_open("locked") is False
+    assert parse_doors_open("Locked") is False
+    assert parse_doors_open("unlocked") is True
     assert parse_doors_open("Open") is True
     assert parse_doors_open("Closed") is False
-    assert parse_doors_open("Locked") is None
-    assert parse_doors_open("Unlocked") is None
-    assert parse_locked("Locked", None) is True
+    assert parse_doors_open("maybe") is None
+    assert parse_locked("locked", None) is True
     assert parse_locked("Unlocked", None) is False
     assert parse_locked("Closed", True) is True
     assert parse_locked("Closed", None) is None
@@ -60,7 +62,7 @@ def test_vehicle_snapshot_keeps_raw_text():
             "GpsStatus": "Valid",
             "GpsDateTime": "2026-01-15T12:30:00Z",
             "ExternalVoltage": "12.4",
-            "Rssi": -68,
+            "Rssi": 84,
             "DoorStatus": "Closed",
             "EngineStatus": "Running",
             "IgnitionStatus": "On",
@@ -74,5 +76,13 @@ def test_vehicle_snapshot_keeps_raw_text():
     assert fields["doors_open"] is False
     assert fields["locked"] is None
     assert fields["voltage"] == 12.4
+    assert fields["rssi"] == 84
+    assert fields["online"] is True
+    assert fields["online_raw"] == "true"
     assert fields["engine_raw"] == "Running"
     assert fields["engine_shutdown_raw"] == "later"
+    locked = vehicle_from_status({"DoorStatus": "locked", "Online": False}, None)
+    assert locked["doors_open"] is False
+    assert locked["locked"] is True
+    assert locked["door_raw"] == "locked"
+    assert locked["online_raw"] == "false"

@@ -43,15 +43,22 @@ async def test_entities_and_voice_phrases(hass, cl6_entry, fake_cl6):
     entries = er.async_entries_for_config_entry(er.async_get(hass), cl6_entry.entry_id)
     assert len(entries) == 13
     assert hass.states.get(entity_id(hass, "sensor", "voltage")).state == "12.4"
-    assert float(hass.states.get(entity_id(hass, "sensor", "signal")).state) == -70
+    signal = hass.states.get(entity_id(hass, "sensor", "signal"))
+    assert float(signal.state) == 84
+    assert signal.attributes["unit_of_measurement"] == "%"
+    assert signal.attributes.get("device_class") != "signal_strength"
     assert hass.states.get(entity_id(hass, "binary_sensor", "engine")).state == "off"
-    assert hass.states.get(entity_id(hass, "binary_sensor", "online")).state == "on"
+    online = hass.states.get(entity_id(hass, "binary_sensor", "online"))
+    assert online.state == "on"
+    assert online.attributes["raw"] == "true"
     assert hass.states.get(entity_id(hass, "sensor", "last_command")).state == "idle"
     tracker = hass.states.get(entity_id(hass, "device_tracker", "location"))
     assert tracker.attributes["latitude"] == 47.6062
     assert tracker.attributes["speed"] == 0
     doors = hass.states.get(entity_id(hass, "binary_sensor", "doors"))
     assert doors.attributes["raw"] == "Closed"
+    assert doors.state == "off"
+    assert doors.attributes["device_class"] == "lock"
 
     phrases_path = Path(hass.config.path("custom_sentences", "en", "cl6.yaml"))
     phrases_path.unlink(missing_ok=True)

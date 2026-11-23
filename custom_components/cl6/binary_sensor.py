@@ -46,7 +46,8 @@ SENSORS = (
     Cl6BinaryDescription(
         key="doors",
         translation_key="doors",
-        device_class=BinarySensorDeviceClass.DOOR,
+        # DoorStatus is lock state. On means unlocked.
+        device_class=BinarySensorDeviceClass.LOCK,
         is_on_fn=lambda data: data.doors_open,
         raw_fn=lambda data: data.door_raw,
     ),

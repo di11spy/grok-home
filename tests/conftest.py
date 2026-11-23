@@ -25,7 +25,7 @@ def sample_status(**overrides: Any) -> dict[str, Any]:
         "Speed": 0,
         "Heading": 90,
         "ExternalVoltage": 12.4,
-        "Rssi": -70,
+        "Rssi": 84,
         "DoorStatus": "Closed",
         "EngineStatus": "Off",
         "IgnitionStatus": "Off",

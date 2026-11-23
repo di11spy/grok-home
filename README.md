@@ -53,12 +53,16 @@ Open the CL6 device. You should see:
 | Confirm | Sends the armed start or unlock. |
 | Remote stop | Stops the engine immediately. |
 | Door lock | Lock sends immediately. The first unlock tap only arms an unlock. |
-| Engine, Ignition, Doors, Online | On/off readings from the car. |
+| Engine, Ignition, Lock status, Online | On/off readings from the car. |
 | Battery voltage, Signal, Last GPS time | Numbers and the last time CL6 reported a position. |
 | Last command | Diagnostic. Shows the last action and whether it was success, failed, or unknown. |
 | Location | The car on the map, when CL6 has a real GPS fix. |
 
-Doors "on" means a door looks open. The lock is a separate control. CL6 does not publish a manual of the exact words it sends, so each of those sensors keeps the raw word in its attributes. After the first refresh, open the entity and look at `raw` if a reading looks wrong.
+CL6's door status is the lock, not whether a door is ajar. On this car it sends `locked` or `unlocked`. The Door lock control and Lock status use that same reading. Lock status is off when the car says locked, and on when it says unlocked. There is no separate open-or-closed door sensor.
+
+Signal is the `Rssi` number CL6 sends. On this car it is a level such as 84, shown as a percentage. It is not a dBm signal strength.
+
+Each of these sensors keeps the value CL6 sent in its `raw` attribute, including `true` and `false`. If a reading looks wrong, open the entity and look at `raw`.
 
 ## Confirmation
 
@@ -146,7 +150,9 @@ The library this uses has not had its live vehicle commands verified by its auth
 - No two-factor login and no refresh token. If the password changes, Home Assistant asks for the new one.
 - A timed-out command is unknown. It is never retried automatically.
 - Status is polled, at best every 2 minutes, plus one refresh after each command. It is not instant.
-- The door, engine, and ignition words are best guesses until the raw values from your car are checked.
+- Door status from CL6 is locked or unlocked. The integration does not know if a door is physically open.
+- Signal is shown as a percentage because the live `Rssi` value is a 0–100 style level, not dBm.
+- Engine and ignition words are still best guesses. Check the `raw` attribute if one looks wrong.
 - Voice confirm uses the word "confirm". If that gets in the way of another phrase, edit `config/custom_sentences/en/cl6.yaml`.
 - The car's own module may also shut the engine off on its own schedule. This integration still sends its own stop.
 

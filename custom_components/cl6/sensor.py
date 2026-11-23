@@ -9,11 +9,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import (
-    SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
-    EntityCategory,
-    UnitOfElectricPotential,
-)
+from homeassistant.const import PERCENTAGE, EntityCategory, UnitOfElectricPotential
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -34,8 +30,7 @@ SENSORS = (
     SensorEntityDescription(
         key="signal",
         translation_key="signal",
-        device_class=SensorDeviceClass.SIGNAL_STRENGTH,
-        native_unit_of_measurement=SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
+        native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=0,
         icon="mdi:signal",

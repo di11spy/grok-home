@@ -1,0 +1,25 @@
+arm:
+  name: Arm
+  description: Arm a remote start or unlock. Nothing is sent to the car until you confirm.
+  fields:
+    action:
+      name: Action
+      description: Start or unlock.
+      required: true
+      selector:
+        select:
+          options:
+            - label: Start
+              value: start
+            - label: Unlock
+              value: unlock
+      example: start
+  target:
+    device:
+      integration: cl6
+confirm:
+  name: Confirm
+  description: Send the armed start or unlock. The arm expires and works only once.
+  target:
+    device:
+      integration: cl6

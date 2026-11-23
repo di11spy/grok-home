@@ -1,0 +1,104 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to CL6",
+        "description": "Use the email and password from the MyCarControls app. Staying signed in on your phone is fine.",
+        "data": {
+          "email": "Email",
+          "password": "Password"
+        }
+      },
+      "vehicle": {
+        "title": "Choose the car",
+        "description": "This account has more than one vehicle.",
+        "data": {
+          "asset_id": "Vehicle"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Update the CL6 password",
+        "description": "CL6 rejected the saved password for {email}. Enter the current password. The email stays the same.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "That email or password was rejected.",
+      "cannot_connect": "Home Assistant could not reach CL6. Try again in a minute.",
+      "no_vehicles": "No car was found on this account.",
+      "unknown": "CL6 answered in a way this integration did not understand."
+    },
+    "abort": {
+      "already_configured": "This car is already set up.",
+      "reauth_successful": "Password updated."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "CL6 options",
+        "description": "A remote start that is already counting down keeps the timer it began with.",
+        "data": {
+          "scan_interval": "Status refresh (minutes)",
+          "max_run_minutes": "Longest remote start (minutes)",
+          "extend_once": "On a cold day, start one more time when the first run ends",
+          "confirm_seconds": "Confirmation window (seconds)"
+        },
+        "data_description": {
+          "scan_interval": "How often to ask CL6 how the car is. Two minutes is the shortest, because this service is unofficial.",
+          "max_run_minutes": "After this many minutes, one engine stop is sent.",
+          "extend_once": "Sends a second start when the first run ends, then stops after another full run. It does not ask you to confirm again.",
+          "confirm_seconds": "How long a start or unlock waits for you to confirm. After this, it is forgotten and nothing is sent."
+        }
+      }
+    },
+    "error": {
+      "invalid_scan": "Use at least 2 minutes.",
+      "invalid_run": "Use a run time from 1 to 30 minutes.",
+      "invalid_window": "Use a confirmation window from 10 to 180 seconds."
+    }
+  },
+  "entity": {
+    "button": {
+      "start": { "name": "Remote start" },
+      "stop": { "name": "Remote stop" },
+      "confirm": { "name": "Confirm" }
+    },
+    "lock": {
+      "doors": { "name": "Door lock" }
+    },
+    "binary_sensor": {
+      "engine": { "name": "Engine" },
+      "ignition": { "name": "Ignition" },
+      "doors": { "name": "Doors" },
+      "online": { "name": "Online" }
+    },
+    "sensor": {
+      "voltage": { "name": "Battery voltage" },
+      "signal": { "name": "Signal" },
+      "gps_time": { "name": "Last GPS time" },
+      "last_command": { "name": "Last command" }
+    },
+    "device_tracker": {
+      "location": { "name": "Location" }
+    }
+  },
+  "services": {
+    "arm": {
+      "name": "Arm",
+      "description": "Arm a remote start or unlock. Nothing is sent to the car until you confirm.",
+      "fields": {
+        "action": {
+          "name": "Action",
+          "description": "Start or unlock."
+        }
+      }
+    },
+    "confirm": {
+      "name": "Confirm",
+      "description": "Send the armed start or unlock. The arm expires and works only once."
+    }
+  }
+}

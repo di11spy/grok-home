@@ -1,0 +1,13 @@
+{
+  "domain": "cl6",
+  "name": "CL6 Remote Start",
+  "codeowners": ["@di11spy"],
+  "config_flow": true,
+  "dependencies": ["persistent_notification"],
+  "documentation": "https://github.com/di11spy/grok-home",
+  "integration_type": "device",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/di11spy/grok-home/issues",
+  "requirements": ["requests>=2.31.0"],
+  "version": "0.1.0"
+}

@@ -1,0 +1,27 @@
+{
+  "entity": {
+    "button": {
+      "start": { "default": "mdi:engine-outline" },
+      "stop": { "default": "mdi:engine-off-outline" },
+      "confirm": { "default": "mdi:check-decagram" }
+    },
+    "lock": {
+      "doors": { "default": "mdi:car-door-lock" }
+    },
+    "binary_sensor": {
+      "engine": { "default": "mdi:engine" },
+      "ignition": { "default": "mdi:key" },
+      "doors": { "default": "mdi:car-door" },
+      "online": { "default": "mdi:cloud-check" }
+    },
+    "sensor": {
+      "voltage": { "default": "mdi:car-battery" },
+      "signal": { "default": "mdi:signal" },
+      "gps_time": { "default": "mdi:map-clock" },
+      "last_command": { "default": "mdi:history" }
+    },
+    "device_tracker": {
+      "location": { "default": "mdi:car" }
+    }
+  }
+}

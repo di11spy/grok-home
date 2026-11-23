@@ -1,0 +1,17 @@
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["custom_components", "tests"]
+extend-exclude = ["custom_components/cl6/vendor"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+timeout = 60
+filterwarnings = [
+  "ignore:'asyncio.iscoroutinefunction' is deprecated:DeprecationWarning",
+]

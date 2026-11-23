@@ -1,0 +1,39 @@
+# cl6-managed-sentences
+# CL6 writes this file so Assist understands the phrases below.
+# You can edit the phrases. If you delete the first line, CL6 will leave your copy alone.
+language: "en"
+intents:
+  Cl6ArmStart:
+    data:
+      - sentences:
+          - "start her car"
+          - "start his car"
+          - "start the car"
+          - "start my car"
+          - "remote start [the] car"
+          - "remote start her car"
+  Cl6ArmUnlock:
+    data:
+      - sentences:
+          - "unlock her car"
+          - "unlock the car"
+          - "unlock my car"
+  Cl6Confirm:
+    data:
+      - sentences:
+          - "confirm"
+          - "confirm [the] (start|unlock|car)"
+          - "yes confirm"
+  Cl6Stop:
+    data:
+      - sentences:
+          - "stop her car"
+          - "stop the car"
+          - "stop my car"
+          - "remote stop [the] car"
+  Cl6Lock:
+    data:
+      - sentences:
+          - "lock her car"
+          - "lock the car"
+          - "lock my car"
